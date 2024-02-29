@@ -1,0 +1,139 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Titillium Web', serif;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#info {
+  z-index: 1000;
+  position: absolute;
+  width: 500px;
+  top: 1%;
+  bottom: 1%;
+  left: .5%;
+  padding: 40px 15px 900px 15px;
+  background: #343a40;
+  color: white;
+
+}
+
+
+/* social media icons */
+#info a {
+  color: lightgray;
+}
+
+#info a:hover {
+  color: white;
+  opacity: 0.3;
+}
+
+#title {
+  font-size: 25px;
+  font-family: 'Oswald', sans-serif;
+}
+
+/* social media icons */
+#title span {
+  font-size: 14px;
+  float: right;
+  margin-right: 10px;
+}
+
+/* card decks */
+#desc {
+  text-align: center;
+  color: lightgray;
+  font-size: medium;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+#earthquake-count {
+  margin:0;
+  text-align: center;
+  color: orange;
+  font-size: 50px;
+}
+
+#earthquake-chart {
+  top: 20px;
+}
+
+
+#footer {
+  position: absolute;
+  bottom: 0px;
+  margin-bottom:20px;
+  margin-right: 10px;
+  font-size: 13px;
+  line-height: 150%;
+  color: lightgray;
+}
+
+
+
+/* the layout of the legend panel */
+#legend {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 110px;
+    background: #fff;
+    margin-right: 20px;
+    margin-bottom: 40px;
+    padding: 10px 20px 10px 10px;
+    border-radius: 3px;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* each line for a break */
+.break {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* basic style for a dot/circle */
+.dot {
+    display: inline-block;
+    margin-top: 5px;
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+/* the label for the dot */
+.dot-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-style: italic;
+}
+
+
+
+/* bar chart */
+text {
+  fill: gray
+}
+
+.tick line {
+  stroke: gray;
+}
+
+.c3-axis path {
+  stroke: gray;
+}
+
+.name, .value {
+  background-color: black;
+  color: black
+}
