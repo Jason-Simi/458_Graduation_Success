@@ -8,7 +8,7 @@ let map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/dark-v10',
     zoom: 5, // starting zoom
     minZoom: 5,
-    center: [-98, 40] // starting center
+    center: [-123, 47] // starting center
 });
 
 // declare the coordinated chart as well as other variables.
@@ -17,7 +17,7 @@ let graduationChart = null,
     numTracts = 0;
 
 // create a few constant variables.
-const grades = [4, 5, 6],
+const grades = [2, 5, 10],
     colors = ['rgb(208,209,230)', 'rgb(103,169,207)', 'rgb(1,108,89)'],
     radii = [5, 15, 20];
 
@@ -25,7 +25,7 @@ const grades = [4, 5, 6],
 const legend = document.getElementById('legend');
 
 //set up legend grades content and labels
-let labels = ['<strong>Graduation Rate</strong>'], vbreak;
+let labels = ['<strong>Percent Without Diploma</strong>'], vbreak;
 
 //iterate through grades and create a scaled circle and label for each
 for (var i = 0; i < grades.length; i++) {
@@ -54,7 +54,7 @@ async function geojsonFetch() {
     // Await operator is used to wait for a promise. 
     // An await can cause an async function to pause until a Promise is settled.
     let response;
-    response = await fetch('assets/graduationrates.geojson'); //CHANGE THIS TO ACTUAL FILE NAME
+    response = await fetch('assets/No_High_School_Diploma_(Current_Version).geojson'); 
     gradrates = await response.json();
 
 
@@ -79,7 +79,7 @@ async function geojsonFetch() {
                 'paint': {
                     // increase the radii of the circle as mag value increases
                     'circle-radius': {
-                        'property': 'rate', // CHANGE THIS TO ACTUAL COLUMN NAME
+                        'property': 'Percent_Without_Diploma', 
                         'stops': [
                             [grades[0], radii[0]],
                             [grades[1], radii[1]],
@@ -88,7 +88,7 @@ async function geojsonFetch() {
                     },
                     // change the color of the circle as mag value increases
                     'circle-color': {
-                        'property': 'rate', // CHANGE THIS TO ACTUAL COLUMN NAME
+                        'property': 'Percent_Without_Diploma', 
                         'stops': [
                             [grades[0], colors[0]],
                             [grades[1], colors[1]],
@@ -108,7 +108,7 @@ async function geojsonFetch() {
         map.on('click', 'gradrates-point', (event) => {
             new mapboxgl.Popup()
                 .setLngLat(event.features[0].geometry.coordinates)
-                .setHTML(`<strong>Graduation Rate:</strong> ${event.features[0].properties.rate}`)
+                .setHTML(`<strong>Graduation Rate:</strong> ${event.features[0].properties.Percent_Without_Diploma}`)
                 .addTo(map);
         });
 
@@ -204,22 +204,22 @@ async function geojsonFetch() {
 // call the geojson loading function
 geojsonFetch();
 
-function calEarthquakes(currentEarthquakes, currentMapBounds) {
+function calEarthquakes(currentGradRates, currentMapBounds) {
 
-    let magnitudesClasses = {
+    let ratesClasses = {
         4: 0,
         5: 0,
         6: 0
     };
-    currentEarthquakes.features.forEach(function (d) { // d indicate a feature of currentEarthquakes
+    currentGradRates.features.forEach(function (d) { // d indicate a feature of currentEarthquakes
         // contains is a spatial operation to determine whether a point within a bbox or not.
         if (currentMapBounds.contains(d.geometry.coordinates)) {
             // if within, the # of the earthquake in the same magnitude increase by 1.
-            magnitudesClasses[Math.floor(d.properties.mag)] += 1;
+            ratesClasses[Math.floor(d.properties.Percent_Without_Diploma)] += 1;
         }
 
     })
-    return magnitudesClasses;
+    return ratesClasses;
 }
 
 // capture the element reset and add a click event to it.
