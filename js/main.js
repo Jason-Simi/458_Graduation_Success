@@ -54,7 +54,7 @@ async function geojsonFetch() {
     // Await operator is used to wait for a promise. 
     // An await can cause an async function to pause until a Promise is settled.
     let response;
-    response = await fetch('assets/No_High_School_Diploma_(Current_Version).geojson'); 
+    response = await fetch('assets/diploma_data.geojson'); 
     gradrates = await response.json();
 
 
