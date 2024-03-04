@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Graduation Rate Success </title>
+    <title>Graduation Rate Success</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <!-- include google web fonts -->
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web|Oswald" rel="stylesheet">
@@ -15,6 +15,15 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
+<style>
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1001;
+    }
+</style>
 
 <body>
     <!-- sidebar -->
@@ -36,8 +45,73 @@
         </div>
     </div>
     <div id="map"></div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
+
+        // declare the map object
+        let map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/dark-v10',
+            zoom: 5, // starting zoom
+            center: [-123, 47] // starting center
+        });
+
+        map.on('load', () => {
+
+            map.addSource('pov_data', {
+                type: 'geojson',
+                data: 'assets/pov_rate.geojson',
+                generateId: true
+            });
+
+            map.on('sourcedata', (e) => {
+                if (e.sourceId === 'pov_data' && e.isSourceLoaded) {
+                    const geoJsonData = map.getSource('pov_data')._data;
+                    if (geoJsonData && geoJsonData.features && geoJsonData.features.length > 0) {
+                        console.log('GeoJSON data loaded:', geoJsonData);
+                        const firstFeatureValue = geoJsonData.features[0].properties.Percent_Living_in_Poverty;
+                        console.log('Value of Percent_Living_in_Poverty:', firstFeatureValue);
+
+                        map.addLayer({
+                            'id': 'pov_data_layer',
+                            'type': 'fill',
+                            'source': 'pov_data',
+                            'paint': {
+                                'fill-color': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['get', 'Percent_Living_in_Poverty'],
+                                    0, '#888888',
+                                    10, '#FED976',
+                                    20, '#FEB24C',
+                                    30, '#FD8D3C',
+                                    40, '#FC4E2A',
+                                    50, '#E31A1C',
+                                    60, '#800026'
+                                ],
+                                'fill-opacity': 0.7
+                            }
+                        });
+
+                        map.addLayer({
+                            'id': 'pov_data_line',
+                            'type': 'line',
+                            'source': 'pov_data',
+                            'paint': {
+                                'line-color': '#000000',
+                                'line-width': .5,
+                            }
+                        });
+                    } else {
+                        console.error('No features found in the GeoJSON data.');
+                    }
+                }
+            });
+        });
+    </script>
     <div id="legend"></div>
-    <script src="js/main.js"></script>
     <script src="js/pov_chart.js"></script>
 </body>
+
 </html>
