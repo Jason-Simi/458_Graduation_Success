@@ -33,10 +33,6 @@ body {
   gap: 20px;
 }
 
-#reset {
-  margin-left: auto;
-}
-
 #info a {
   color: lightgray;
 }
@@ -44,6 +40,14 @@ body {
 #info a:hover {
   color: white;
   opacity: 0.3;
+}
+
+#reset {
+  margin-left: auto;
+}
+
+#reset a {
+  color: #EF8354;
 }
 
 #title {
@@ -61,25 +65,17 @@ body {
 }
 
 /* card decks */
-#desc {
+#chart-title {
   text-align: center;
-  color: #BFACC8;
+  color: #CAF7E2;
   font-size: medium;
   font-weight: bold;
   margin-bottom: 0px;
 }
 
-#earthquake-count {
-  margin:0;
-  text-align: center;
-  color: orange;
-  font-size: 50px;
+#desc {
+  color: #58B09C;
 }
-
-#earthquake-chart {
-  top: 20px;
-}
-
 
 #footer {
   position: absolute;
@@ -88,7 +84,7 @@ body {
   margin-right: 10px;
   font-size: 13px;
   line-height: 150%;
-  color: lightgray;
+  color: #BFACC8;
 }
 
 
