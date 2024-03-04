@@ -44,4 +44,3 @@ function drawChart() {
         .catch(error => console.error('Error loading data:', error));
 }
 
-// Set callback function when Google Charts library is loaded

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Graduation Rate Success </title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <!-- include google web fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web|Oswald" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
+    <!-- include icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/pov_chart.css">
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+    <!-- sidebar -->
+    <div id="info">
+        <div id="title">
+            High School Graduation Rates and Poverty Rate
+            <span><a href="https://twitter.com/UW" target="_blank"><i class="bi bi-twitter"></i></a></span>
+            <span><a href="https://github.com/jakobzhao/geog458" target="_blank"><i class="bi bi-github"></i></a></span>
+            <span id="reset"><a href="#">reset</a></span>
+        </div>
+        <div id="count" class="card">
+            <h5 id="desc">TITLE FOR CHART ON DASHBOARD GOES HERE </h5>
+        </div>
+        <div id="pov_chart"></div>
+
+        <div id="footer">
+            Income data from US Census: <a href="https://data.census.gov/table/ACSDT1Y2018.B19013?q=b19013&g=010XX00US$0600000_040XX00US53$0500000">Census</a>
+            Graduation Rate data from Washington Geospatial Open Data Portal: <a href="https://geo.wa.gov/datasets/d4a6f3c1a45d48b9b31de9ebaf5af4ee_0/explore?location=47.237631%2C-120.811974%2C8.00">Washington Geospatial Open Data Portal</a>
+        </div>
+    </div>
+    <div id="map"></div>
+    <div id="legend"></div>
+    <script src="js/main.js"></script>
+    <script src="js/pov_chart.js"></script>
+</body>
+</html>
