@@ -6,7 +6,7 @@ mapboxgl.accessToken =
 let map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/dark-v10',
-    zoom: 5.5, // starting zoom
+    zoom: 6, // starting zoom
     minZoom: 1,
     center: [-124, 47] // starting center
 });
@@ -36,6 +36,19 @@ async function geojsonFetch() {
         return feature.properties.pctnodiploma !== undefined;
     });
 
+
+    let response2;
+    response2 = await fetch('assets/incomedata.geojson');
+    pov_data = await response2.json();
+
+
+    pov_data.features.forEach(feature => {
+        feature.properties.S1902_C03_001E = parseFloat(feature.properties.S1902_C03_001E);
+    });
+
+
+
+
      //load data to the map as new layers.
     //map.on('load', function loadingData() {
         map.on('load', () => { //simplifying the function statement: arrow with brackets to define a function
@@ -46,41 +59,67 @@ async function geojsonFetch() {
                 type: 'geojson',
                 data: gradrates
             });
-    
-    
+
+            map.addSource('pov_data', {
+                type: 'geojson',
+                data: pov_data,
+                generateId: true
+            });
+            
             map.addLayer({
-                    'id': 'gradrates-point',
-                    'type': 'circle',
-                    'source': 'gradrates',
-                    'minzoom': 2,
-                    'paint': {
-                        // increase the radii of the circle as mag value increases
-                        'circle-radius': {
-                            'property': 'pctnodiploma', 
-                            'stops': [
-                                [grades[0], radii[0]],
-                                [grades[1], radii[1]],
-                                [grades[2], radii[2]],
-                                [grades[3], radii[3]]
-                            ]
-                        },
-                        // change the color of the circle as mag value increases
-                        'circle-color': {
-                            'property': 'pctnodiploma', 
-                            'stops': [
-                                [grades[0], colors[0]],
-                                [grades[1], colors[1]],
-                                [grades[2], colors[2]],
-                                [grades[3], colors[3]]
-                            ]
-                        },
-                        'circle-stroke-color': 'white',
-                        'circle-stroke-width': 1,
-                        'circle-opacity': 0.6
-                    }
-                },
-                'waterway-label' // make the thematic layer above the waterway-label layer.
-            );
+                'id': 'pov_data_layer',
+                'type': 'fill',
+                'source': 'pov_data',
+                'paint': {
+                    'fill-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'S1902_C03_001E'],
+                        20000, '#eff3ff', // Lightest blue
+                        40000, '#bdd7e7',
+                        60000, '#6baed6',
+                        80000, '#3182bd',
+                        100000, '#08519c',
+                        120000, '#084594' // Darkest blue
+                    ],
+                    'fill-opacity': 0.9 // Increase opacity for better visibility
+                }
+            });
+            
+            map.addLayer({
+                'id': 'pov_data_line',
+                'type': 'line',
+                'source': 'pov_data',
+                'paint': {
+                    'line-color': '#ffffff', // White outline for better contrast
+                    'line-width': .5,
+                }
+            });
+            
+            map.addLayer({
+                'id': 'gradrates-point',
+                'type': 'circle',
+                'source': 'gradrates',
+                'minzoom': 2,
+                'paint': {
+                    'circle-radius': {
+                        'property': 'pctnodiploma',
+                        'stops': [
+                            [grades[0], radii[0]],
+                            [grades[1], radii[1]],
+                            [grades[2], radii[2]],
+                            [grades[3], radii[3]]
+                        ]
+                    },
+                    'circle-color': '#31a354', // Green color for the proportional symbols
+                    'circle-stroke-color': '#ffffff', // White outline for better contrast
+                    'circle-stroke-width': 1,
+                    'circle-opacity': 0.6 // Reduce opacity for better contrast
+                }
+            });
+            
+
+
 
 
         // click on each dot to view magnitude in a popup

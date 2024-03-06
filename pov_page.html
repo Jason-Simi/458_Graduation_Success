@@ -62,9 +62,9 @@
         let popup;
 
         async function geojsonFetch() {
-            let response;
-            response = await fetch('assets/incomedata.geojson');
-            pov_data = await response.json();
+            let response2;
+            response2 = await fetch('assets/incomedata.geojson');
+            pov_data = await response2.json();
 
 
             pov_data.features.forEach(feature => {
