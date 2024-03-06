@@ -1,14 +1,14 @@
 // assign the access token
 mapboxgl.accessToken =
-    'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
+    'pk.eyJ1IjoiY3phaG4yIiwiYSI6ImNsczNuODdlZTBvNXQyaXBidXZpZXdiamUifQ.VVwXh_XspA4FJt3D-mS7og';
 
 // declare the map object
 let map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/dark-v10',
-    zoom: 5, // starting zoom
-    minZoom: 5,
-    center: [-123, 47] // starting center
+    zoom: 5.5, // starting zoom
+    minZoom: 1,
+    center: [-124, 47] // starting center
 });
 
 // declare the coordinated chart as well as other variables.
@@ -17,11 +17,83 @@ let graduationChart = null,
     numTracts = 0;
 
 // create a few constant variables.
-const grades = [2, 5, 10],
-    colors = ['rgb(208,209,230)', 'rgb(103,169,207)', 'rgb(1,108,89)'],
-    radii = [5, 15, 20];
+const grades = [2, 5, 10, 20],
+    colors = ['rgb(208,209,230)', 'rgb(103,169,207)', 'rgb(1,108,89)', 'rgb(19,102,51)'],
+    radii = [1, 2, 5, 10];
 
-// create the legend object and anchor it to the html element with id legend.
+
+
+// define the asynchronous function to load geojson data.
+async function geojsonFetch() {
+
+    // Await operator is used to wait for a promise. 
+    // An await can cause an async function to pause until a Promise is settled.
+    let response;
+    response = await fetch('assets/diplomadatacentroids.geojson'); 
+    gradrates = await response.json();
+
+    gradrates.features = gradrates.features.filter(feature => {
+        return feature.properties.pctnodiploma !== undefined;
+    });
+
+     //load data to the map as new layers.
+    //map.on('load', function loadingData() {
+        map.on('load', () => { //simplifying the function statement: arrow with brackets to define a function
+
+            // when loading a geojson, there are two steps
+            // add a source of the data and then add the layer out of the source
+            map.addSource('gradrates', {
+                type: 'geojson',
+                data: gradrates
+            });
+    
+    
+            map.addLayer({
+                    'id': 'gradrates-point',
+                    'type': 'circle',
+                    'source': 'gradrates',
+                    'minzoom': 2,
+                    'paint': {
+                        // increase the radii of the circle as mag value increases
+                        'circle-radius': {
+                            'property': 'pctnodiploma', 
+                            'stops': [
+                                [grades[0], radii[0]],
+                                [grades[1], radii[1]],
+                                [grades[2], radii[2]],
+                                [grades[3], radii[3]]
+                            ]
+                        },
+                        // change the color of the circle as mag value increases
+                        'circle-color': {
+                            'property': 'pctnodiploma', 
+                            'stops': [
+                                [grades[0], colors[0]],
+                                [grades[1], colors[1]],
+                                [grades[2], colors[2]],
+                                [grades[3], colors[3]]
+                            ]
+                        },
+                        'circle-stroke-color': 'white',
+                        'circle-stroke-width': 1,
+                        'circle-opacity': 0.6
+                    }
+                },
+                'waterway-label' // make the thematic layer above the waterway-label layer.
+            );
+
+
+        // click on each dot to view magnitude in a popup
+        map.on('click', 'gradrates-point', (event) => {
+        
+            const pctnodiploma = event.features[0].properties.pctnodiploma;
+            new mapboxgl.Popup()
+                .setLngLat(event.features[0].geometry.coordinates)
+                .setHTML(`<strong>Percent Without Diploma: </strong> ${pctnodiploma}<strong>%</strong>`)
+                .addTo(map);
+        });
+
+        // create the legend object and anchor it to the html element with id legend.
 const legend = document.getElementById('legend');
 
 //set up legend grades content and labels
@@ -45,72 +117,6 @@ const source =
 
 // join all the labels and the source to create the legend content.
 legend.innerHTML = labels.join('') + source;
-
-
-
-// define the asynchronous function to load geojson data.
-async function geojsonFetch() {
-
-    // Await operator is used to wait for a promise. 
-    // An await can cause an async function to pause until a Promise is settled.
-    let response;
-    response = await fetch('assets/diploma_data.geojson'); 
-    gradrates = await response.json();
-
-
-
-    //load data to the map as new layers.
-    //map.on('load', function loadingData() {
-    map.on('load', () => { //simplifying the function statement: arrow with brackets to define a function
-
-        // when loading a geojson, there are two steps
-        // add a source of the data and then add the layer out of the source
-        map.addSource('gradrates', {
-            type: 'geojson',
-            data: gradrates
-        });
-
-
-        map.addLayer({
-                'id': 'gradrates-point',
-                'type': 'circle',
-                'source': 'gradrates',
-                'minzoom': 5,
-                'paint': {
-                    // increase the radii of the circle as mag value increases
-                    'circle-radius': {
-                        'property': 'Percent_Without_Diploma', 
-                        'stops': [
-                            [grades[0], radii[0]],
-                            [grades[1], radii[1]],
-                            [grades[2], radii[2]]
-                        ]
-                    },
-                    // change the color of the circle as mag value increases
-                    'circle-color': {
-                        'property': 'Percent_Without_Diploma', 
-                        'stops': [
-                            [grades[0], colors[0]],
-                            [grades[1], colors[1]],
-                            [grades[2], colors[2]]
-                        ]
-                    },
-                    'circle-stroke-color': 'white',
-                    'circle-stroke-width': 1,
-                    'circle-opacity': 0.6
-                }
-            },
-            'waterway-label' // make the thematic layer above the waterway-label layer.
-        );
-
-
-        // click on each dot to view magnitude in a popup
-        map.on('click', 'gradrates-point', (event) => {
-            new mapboxgl.Popup()
-                .setLngLat(event.features[0].geometry.coordinates)
-                .setHTML(`<strong>Graduation Rate:</strong> ${event.features[0].properties.Percent_Without_Diploma}`)
-                .addTo(map);
-        });
 
 
 // THIS SECTION IS FOR THE BAR CHART 
