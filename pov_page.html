@@ -12,21 +12,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/pov_chart.css">
     <link rel="stylesheet" href="css/style.css" />
+    <style>
+        #map {
+            top: 0;
+            bottom: 0;
+            width: 100%; /* Adjust width as needed */
+            height: 100vh;
+            z-index: 1001;
+            position: relative;
+        }
+    </style>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
-<style>
-    #map {
-        top: 0;
-        bottom: 0;
-        width: 100%; /* Adjust width as needed */
-        height: 100vh;
-        z-index: 1001;
-    }
-
-    #info {
-        display: none;
-    }
-</style>
 
 <body>
     <!-- sidebar -->
@@ -38,13 +36,16 @@
             <span id="reset"><a href="#">reset</a></span>
         </div>
         <div id="count" class="card">
+            <h5 id="chart-title">TITLE FOR CHART ON DASHBOARD GOES HERE </h5>
             <h5 id="desc">TITLE FOR CHART ON DASHBOARD GOES HERE </h5>
         </div>
+        <div id="pov_chart"></div>
         <div id="footer">
             Income data from US Census: <a href="https://data.census.gov/table/ACSDT1Y2018.B19013?q=b19013&g=010XX00US$0600000_040XX00US53$0500000">Census</a>
             Graduation Rate data from Washington Geospatial Open Data Portal: <a href="https://geo.wa.gov/datasets/d4a6f3c1a45d48b9b31de9ebaf5af4ee_0/explore?location=47.237631%2C-120.811974%2C8.00">Washington Geospatial Open Data Portal</a>
         </div>
     </div>
+
     <div id="map"></div>
 
     <script>
@@ -53,17 +54,18 @@
         // declare the map object
         let map = new mapboxgl.Map({
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/light-v10', // lighter map style
+            style: 'mapbox://styles/mapbox/dark-v10', // lighter map style
             zoom: 6, // starting zoom (adjust as needed)
-            center: [-120.5, 47.5] // center coordinates for Washington state
+            center: [-123.072132, 47.465584] // center coordinates for Washington state
         });
+
+        let popup;
 
         async function geojsonFetch() {
             let response;
             response = await fetch('assets/incomedata.geojson');
             pov_data = await response.json();
 
-            console.log('GeoJSON data:', pov_data); // Log the loaded GeoJSON data
 
             pov_data.features.forEach(feature => {
                 feature.properties.S1902_C03_001E = parseFloat(feature.properties.S1902_C03_001E);
@@ -77,27 +79,26 @@
                     generateId: true
                 });
 
-                console.log('Source added to the map:', map.getSource('pov_data'));
-
                 map.addLayer({
                     'id': 'pov_data_layer',
                     'type': 'fill',
-                     'source': 'pov_data',
+                    'source': 'pov_data',
                     'paint': {
-                    'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', 'S1902_C03_001E'],
-                    20000, '#ffffcc',  // Light yellow for lower income
-                    40000, '#c2e699',  // Light green for moderate income
-                    60000, '#78c679',  // Darker green for higher income
-                    80000, '#31a354',  // Even darker green
-                    100000, '#006837', // Dark green for high income
-                    120000, '#004529'  // Darkest green for the highest income
-        ],
-        'fill-opacity': 0.7
-     }
-    });
+                        'fill-color': [
+                            'interpolate',
+                            ['linear'],
+                            ['get', 'S1902_C03_001E'],
+                            20000, '#ffffcc',
+                            40000, '#c2e699',
+                            60000, '#78c679',
+                            80000, '#31a354',
+                            100000, '#006837',
+                            120000, '#004529'
+                        ],
+                        'fill-opacity': 0.7
+                    }
+                });
+
                 map.addLayer({
                     'id': 'pov_data_line',
                     'type': 'line',
@@ -108,16 +109,42 @@
                     }
                 });
 
-                const firstFeatureValue = pov_data.features[0].properties.Percent_Living_in_Poverty;
-                console.log('Value of Percent_Living_in_Poverty:', firstFeatureValue);
+                // Add hover effect
+                map.on('mousemove', 'pov_data_layer', function (e) {
+                    // Change the cursor style as a UI indicator
+                    map.getCanvas().style.cursor = 'pointer';
+                    
+                    // Get feature properties
+                    var properties = e.features[0].properties;
+                    var meanIncome = properties.S1902_C03_001E;
 
-                console.log('Layers added to the map:', map.getStyle().layers);
+                    // Remove existing popup
+                    if (popup) {
+                        popup.remove();
+                    }
+
+                    // Create a popup with the mean income information
+                    popup = new mapboxgl.Popup()
+                        .setLngLat(e.lngLat)
+                        .setHTML('<h3>Mean House Hold Income: $' + meanIncome + '</h3>')
+                        .addTo(map);
+                });
+
+                // Reset cursor style and remove popup when the mouse leaves the layer
+                map.on('mouseleave', 'pov_data_layer', function () {
+                    map.getCanvas().style.cursor = '';
+                    if (popup) {
+                        popup.remove();
+                    }
+                });
             });
         }
 
         geojsonFetch();
     </script>
+
     <div id="legend"></div>
+    <script src="js/pov_chart.js"></script>
 </body>
 
 </html>
