@@ -292,3 +292,7 @@ reset.addEventListener('click', event => {
 
 
 });
+
+// Inside the geojsonFetch() function
+
+// Define your legend layers and colors

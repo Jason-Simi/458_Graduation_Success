@@ -174,3 +174,42 @@ text {
 /* #diploma-desc {
   margin-top: 0px;
 } */
+
+#legend2 {
+  position: fixed;
+  bottom: 20px;
+  left: 65%;
+  transform: translateX(-50%);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 4px; /* Further reduced padding */
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  width: auto;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin: 0 6px; /* Further reduced margin */
+}
+
+.legend-key {
+  width: 12px; /* Further reduced width */
+  height: 12px; /* Further reduced height */
+  margin-right: 2px; /* Further reduced margin */
+}
+
+.legend-key span {
+  font-size: 8px; /* Further reduced font size */
+}
+
+.legend-item span {
+  margin-left: 2px; /* Further reduced margin */
+}
+
+.legend-title {
+  margin-left: 10px; /* Adjust the margin between title and legend items */
+}
