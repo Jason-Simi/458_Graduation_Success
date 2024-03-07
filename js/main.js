@@ -296,3 +296,15 @@ reset.addEventListener('click', event => {
 // Inside the geojsonFetch() function
 
 // Define your legend layers and colors
+
+// Get references to tab elements
+function toggleTabs(tabName) {
+    var tabs = document.querySelectorAll('.tab');
+    tabs.forEach(function(tab) {
+        if (tab.id === tabName) {
+            tab.style.display = 'block'; // Show the selected tab
+        } else {
+            tab.style.display = 'none'; // Hide other tabs
+        }
+    });
+}
