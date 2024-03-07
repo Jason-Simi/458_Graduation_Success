@@ -308,3 +308,32 @@ function toggleTabs(tabName) {
         }
     });
 }
+
+let popup; // Define popup variable outside event handlers
+
+map.on('mouseenter', 'pov_data_layer', function(e) {
+    // Change the cursor style to pointer
+    map.getCanvas().style.cursor = 'pointer';
+
+    // Get the tract properties
+    var tractProperties = e.features[0].properties;
+
+    // Check if mean income is available
+    if (tractProperties.S1902_C03_001E) {
+        // Create a new popup with mean income information
+        popup = new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML('<strong>Mean Income:</strong> $' + tractProperties.S1902_C03_001E)
+            .addTo(map);
+    }
+});
+
+map.on('mouseleave', 'pov_data_layer', function() {
+    // Change the cursor style back to the default
+    map.getCanvas().style.cursor = '';
+
+    // Close the popup if it exists
+    if (popup) {
+        popup.remove();
+    }
+});
