@@ -3,11 +3,11 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 // Function to draw the chart
 function drawChart() {
-   
+
     fetch('assets/diploma_data.geojson')
         .then(response => response.json())
         .then(data => {
-   
+
             var chartData = new google.visualization.DataTable();
             chartData.addColumn('number', 'Population_over24');
             chartData.addColumn('number', 'Percent_without_diploma');
@@ -22,6 +22,8 @@ function drawChart() {
             });
 
             var options = {
+                width: 250,
+                height: 200,
                 title: 'Population Over 24 vs. Percent Without Diploma',
                 hAxis: {
                     title: 'Population Over 24',

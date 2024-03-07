@@ -8,7 +8,7 @@ let map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/dark-v10',
     zoom: 6, // starting zoom
     minZoom: 1,
-    center: [-124, 47] // starting center
+    center: [-123, 47] // starting center
 });
 
 // declare the coordinated chart as well as other variables.
@@ -26,10 +26,10 @@ const grades = [2, 5, 10, 20],
 // define the asynchronous function to load geojson data.
 async function geojsonFetch() {
 
-    // Await operator is used to wait for a promise. 
+    // Await operator is used to wait for a promise.
     // An await can cause an async function to pause until a Promise is settled.
     let response;
-    response = await fetch('assets/diplomadatacentroids.geojson'); 
+    response = await fetch('assets/diplomadatacentroids.geojson');
     gradrates = await response.json();
 
     gradrates.features = gradrates.features.filter(feature => {
@@ -65,7 +65,7 @@ async function geojsonFetch() {
                 data: pov_data,
                 generateId: true
             });
-            
+
             map.addLayer({
                 'id': 'pov_data_layer',
                 'type': 'fill',
@@ -85,7 +85,7 @@ async function geojsonFetch() {
                     'fill-opacity': 0.9 // Increase opacity for better visibility
                 }
             });
-            
+
             map.addLayer({
                 'id': 'pov_data_line',
                 'type': 'line',
@@ -95,7 +95,7 @@ async function geojsonFetch() {
                     'line-width': .5,
                 }
             });
-            
+
             map.addLayer({
                 'id': 'gradrates-point',
                 'type': 'circle',
@@ -117,14 +117,14 @@ async function geojsonFetch() {
                     'circle-opacity': 0.6 // Reduce opacity for better contrast
                 }
             });
-            
+
 
 
 
 
         // click on each dot to view magnitude in a popup
         map.on('click', 'gradrates-point', (event) => {
-        
+
             const pctnodiploma = event.features[0].properties.pctnodiploma;
             new mapboxgl.Popup()
                 .setLngLat(event.features[0].geometry.coordinates)
@@ -141,7 +141,7 @@ let labels = ['<strong>Percent Without Diploma</strong>'], vbreak;
 //iterate through grades and create a scaled circle and label for each
 for (var i = 0; i < grades.length; i++) {
     vbreak = grades[i];
-    // you need to manually adjust the radius of each dot on the legend 
+    // you need to manually adjust the radius of each dot on the legend
     // in order to make sure the legend can be properly referred to the dot on the map.
     dot_radii = 2 * radii[i];
     labels.push(
@@ -158,33 +158,33 @@ const source =
 legend.innerHTML = labels.join('') + source;
 
 
-// THIS SECTION IS FOR THE BAR CHART 
+// THIS SECTION IS FOR THE BAR CHART
         // the coordinated chart relevant operations
 
-        // found the the magnitudes of all the earthquakes in the displayed map view.        
-        gradrates = calEarthquakes(gradrates, map.getBounds());
-        
-        // enumerate the number of earthquakes.
-        numEarthquakes = magnitudes[4] + magnitudes[5] + magnitudes[6];
+        // found the the magnitudes of all the earthquakes in the displayed map view.
+        pctgradrates = calDiplomas(gradrates, map.getBounds());
+
+        // enumerate the number of census tracts.
+        numTracts = pctgradrates[2] + pctgradrates[5] + pctgradrates[10] + pctgradrates[20];
 
         // update the content of the element earthquake-count.
-        document.getElementById("earthquake-count").innerHTML = numEarthquakes;
+        document.getElementById("census-count").innerHTML = numTracts;
 
         // add "mag" to the beginning of the x variable - the magnitude, and "#" to the beginning of the y variable - the number of earthquake of similar magnitude.
-        x = Object.keys(magnitudes);
-        x.unshift("mag")
-        y = Object.values(magnitudes);
+        x = Object.keys(pctgradrates);
+        x.unshift("pctnodiploma")
+        y = Object.values(pctgradrates);
         y.unshift("#")
 
 
         // generate the chart
-        earthquakeChart = c3.generate({
+        graduationChart = c3.generate({
             size: {
-                height: 350,
-                width: 460
+                height: 200,
+                width: 450
             },
             data: {
-                x: 'mag',
+                x: 'pctnodiploma',
                 columns: [x, y],
                 type: 'bar', // make a bar chart.
                 colors: {
@@ -198,10 +198,10 @@ legend.innerHTML = labels.join('') + source;
                     // combine two filters, the first is ['>=', 'mag', floor], the second is ['<', 'mag', ceiling]
                     // the first indicates all the earthquakes with magnitude greater than floor, the second indicates
                     // all the earthquakes with magnitude smaller than the ceiling.
-                    map.setFilter('earthquakes-point',
+                    map.setFilter('gradrates-point',
                         ['all',
-                            ['>=', 'mag', floor],
-                            ['<', 'mag', ceiling]
+                            ['>=', 'pctnodiploma', floor],
+                            ['<', 'pctnodiploma', ceiling]
                         ]);
                 }
             },
@@ -211,14 +211,14 @@ legend.innerHTML = labels.join('') + source;
                 },
                 y: { //count
                     tick: {
-                        values: [10, 20, 30, 40]
+                        values: [100, 200, 300, 400, 500]
                     }
                 }
             },
             legend: {
                 show: false
             },
-            bindto: "#earthquake-chart" //bind the chart to the place holder element "earthquake-chart".
+            bindto: "#gradrate-chart" //bind the chart to the place holder element "gradrates-chart".
         });
 
     });
@@ -229,18 +229,18 @@ legend.innerHTML = labels.join('') + source;
     //map.on('load', function loadingData() {
     map.on('idle', () => { //simplifying the function statement: arrow with brackets to define a function
 
-        gradrates = calEarthquakes(gradrates, map.getBounds());
-        numEarthquakes = magnitudes[4] + magnitudes[5] + magnitudes[6];
-        document.getElementById("earthquake-count").innerHTML = numEarthquakes;
+        pctgradrates = calDiplomas(gradrates, map.getBounds());
+        numTracts = pctgradrates[2] + pctgradrates[5] + pctgradrates[10] + pctgradrates[20];
+        document.getElementById("census-count").innerHTML = numTracts;
 
 
-        x = Object.keys(magnitudes);
-        x.unshift("mag")
-        y = Object.values(magnitudes);
+        x = Object.keys(pctgradrates);
+        x.unshift("pctnodiploma")
+        y = Object.values(pctgradrates);
         y.unshift("#")
 
         // after finishing each map reaction, the chart will be rendered in case the current bbox changes.
-        earthquakeChart.load({
+        graduationChart.load({
             columns: [x, y]
         });
     });
@@ -249,22 +249,33 @@ legend.innerHTML = labels.join('') + source;
 // call the geojson loading function
 geojsonFetch();
 
-function calEarthquakes(currentGradRates, currentMapBounds) {
+function calDiplomas(currentGradRates, currentMapBounds) {
 
     let ratesClasses = {
-        4: 0,
+        2: 0,
         5: 0,
-        6: 0
+        10: 0,
+        20: 0
     };
     currentGradRates.features.forEach(function (d) { // d indicate a feature of currentEarthquakes
         // contains is a spatial operation to determine whether a point within a bbox or not.
         if (currentMapBounds.contains(d.geometry.coordinates)) {
             // if within, the # of the earthquake in the same magnitude increase by 1.
-            ratesClasses[Math.floor(d.properties.Percent_Without_Diploma)] += 1;
+            let percent = d.properties.Percent_Without_Diploma;
+            let roundedPercent = roundToNearest(percent, Object.keys(ratesClasses));
+            ratesClasses[roundedPercent] += 1;
         }
 
     })
+    console.log(ratesClasses);
     return ratesClasses;
+}
+
+function roundToNearest(number, values) {
+    let nearest = values.reduce(function(prev, curr) {
+        return (Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev);
+    });
+    return nearest;
 }
 
 // capture the element reset and add a click event to it.
@@ -273,8 +284,8 @@ reset.addEventListener('click', event => {
 
     // this event will trigger the map fly to its origin location and zoom level.
     map.flyTo({
-        zoom: 5,
-        center: [-98, 40]
+        zoom: 6,
+        center: [-123, 47]
     });
     // also remove all the applied filters
     map.setFilter('gradrates-point', null)
