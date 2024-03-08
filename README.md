@@ -12,7 +12,7 @@ For our project, we would like to visualize high school graduation rates with av
 
 
 ![Alt text](img/map.png)
-![Alt text](img/dash.png)
+![Alt text](img/dash_2.png)
 
 # Goal
 
