@@ -17,60 +17,60 @@
         <h1>Graduation Rate Success About Page | <a href="index.html">Home</a></h1>
         <h2>Project Summary</h2>
         <p>
-            For our project, we visualized the percentage of citizens without a high school diploma with average incomes across Washington counties. 
-            Free public education is an integral and valuable part of the United States community, and the opportunity to attend school 
-            prepares citizens to potentially continue in higher education or enter the professional world. There is a clear correlation 
-            between higher average incomes and higher rates of high school graduation, so it is paramount that United States citizens know the 
+            For our project, we visualized the percentage of citizens without a high school diploma with average incomes across Washington counties.
+            Free public education is an integral and valuable part of the United States community, and the opportunity to attend school
+            prepares citizens to potentially continue in higher education or enter the professional world. There is a clear correlation
+            between higher average incomes and higher rates of high school graduation, so it is paramount that United States citizens know the
             importance of graduating high school. To represent income we used proportional symbols on top of a choropleth background for high school graduation rates.
         </p>
         <h2>Additional Resources</h2>
         <p>
-            Here we provide some informational resources on the importance of public education. 
+            Here we provide some informational resources on the importance of public education.
 
             <h3><a href="https://www2.ed.gov/about/overview/fed/role.html">US Department of Education</a></h3>
-           
-            This site primarily focuses on education policies, financial aid distribution, and data collection 
-            related to schools. It emphasizes state and local responsibility in education, with a goal of 
+
+            This site primarily focuses on education policies, financial aid distribution, and data collection
+            related to schools. It emphasizes state and local responsibility in education, with a goal of
             enhancing quality and broadening access to education.
 
             <h3><a href="https://nces.ed.gov/fastfacts/display.asp?id=372">National Center for Education Statistics</a></h3>
 
-            The National Center for Education Statistics (NCES) compiles annual facts and figures about schools and colleges 
-            in the United States. Their latest report covers data from the 2019–20 to 2021–22 school years, 
+            The National Center for Education Statistics (NCES) compiles annual facts and figures about schools and colleges
+            in the United States. Their latest report covers data from the 2019–20 to 2021–22 school years,
             providing insights into student enrollment, learning recovery, mental health, and teacher statistics.
 
             <h3><a href="https://health.gov/healthypeople/priority-areas/social-determinants-health/literature-summaries/high-school-graduation">US Department of Health</a></h3>
-            
-            This page highlights the importance of completing high school for employment prospects and overall well-being. Disparities exist among racial and ethnic groups, 
+
+            This page highlights the importance of completing high school for employment prospects and overall well-being. Disparities exist among racial and ethnic groups,
             and factors like parental involvement, school environment, and safety impact graduation rates.
         </p>
         <h2>Data</h2>
         <p>
-            We sourced income data from the <a href="https://data.census.gov/table/ACSST5Y2020.S1902?t=Income%20and%20Poverty&g=040XX00US53$1400000&y=2020">US Census </a>
-            , and graduation data from from the <a href="https://geo.wa.gov/datasets/d4a6f3c1a45d48b9b31de9ebaf5af4ee_0/explore?location=47.237631%2C-120.811974%2C8.00"> Washington Geospatial Open Data Portal</a>
+            We sourced income data from the <a href="https://data.census.gov/table/ACSST5Y2020.S1902?t=Income%20and%20Poverty&g=040XX00US53$1400000&y=2020">US Census</a>,
+            and graduation data from from the <a href="https://geo.wa.gov/datasets/d4a6f3c1a45d48b9b31de9ebaf5af4ee_0/explore?location=47.237631%2C-120.811974%2C8.00"> Washington Geospatial Open Data Portal</a>.
 
             The income data was manipulated using Excel to organize each GEOID to ensure it could be joined with a shapefile.
 
-            The graduation data had the field 'Percentage_Without_Diploma' stored as a string rather than a double, 
+            The graduation data had the field 'Percentage_Without_Diploma' stored as a string rather than a double,
             so we had to convert that attribute. Additionally, the data was polygon rather than point, so we used QGIS
-            to find centroids and map that point coordinate instead. 
+            to find centroids and map that point coordinate instead.
         </p>
         <h2>The Team</h2>
         <p>
             This project was created by four students in the University of Washington's Geography 458: Advanced
             Digital Geographies Winter 2024 course; Jason Simi, Martin Truong, Coby Williams-Gurian, and Camille Zahn.
-            
-            Jason and Martin focused on the interactive elements, CSS, and overall design of the page. 
+
+            Jason and Martin focused on the interactive elements, CSS, and overall design of the page.
             Coby created the choropleth income data map, and finally Camille created the proportional symbols.
         </p>
         <h2>Credits</h2>
         <p>
-            This project was built upon the template code provided by Bo Zhao. 
+            This project was built upon the template code provided by Bo Zhao.
             Bo Zhao is an Associate Professor in the University of Washington's Geography department. He also is the director of the Humanistic
-            GIS Lab. Zhao's work focuses on how GIS and human experiences interact and affect each other. He aims to use GIS to support marginalized 
+            GIS Lab. Zhao's work focuses on how GIS and human experiences interact and affect each other. He aims to use GIS to support marginalized
             communities and vulnerable populations.
 
-            Created using MapBox, Google Fonts, Google Charts, Bootstrap, and QGIS.
+            Created using MapBox, D3, Google Fonts, Google Charts, Bootstrap, and QGIS.
             This project is hosted under GitHub pages.
         </p>
     </body>

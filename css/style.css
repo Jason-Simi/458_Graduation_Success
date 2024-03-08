@@ -79,8 +79,8 @@ body {
 
 .chart-desc {
   color: #62b9a3;
-  margin-left: 12.5px;
-  margin-right: 32px;
+  font-size: 13px;
+  margin: 0 32px 0 12.5px;
 }
 
 #footer {
@@ -102,7 +102,7 @@ body {
   width: 110px;
   background: #fff;
   margin-right: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   padding: 10px 20px 10px 10px;
   border-radius: 3px;
   text-align: center;
@@ -166,15 +166,25 @@ text {
   margin: 0;
 }
 
-#diploma-section {
+#pov-section {
   display: flex;
   flex-direction: row-reverse;
+  align-items: center;
 }
 
+#pov_chart {
+  position: relative;
+  left: -138px;
+}
 
+#pov-desc {
+  position: absolute;
+  width: 220px;
+  margin-top: 100px;
+}
 
 #legend2 {
-  position: fixed;
+  position: absolute;
   bottom: 20px;
   left: 63%; /* Adjust the left position to move the legend more to the left */
   transform: translateX(-50%);
@@ -220,32 +230,32 @@ text {
 
 
 #sidebar {
-  width: 200px; 
+  width: 200px;
   height: 100%;
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  background-color: #f0f0f0; 
-  padding: 20px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: flex-start; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #f0f0f0;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 
 .sidebar-button {
   margin-top: 40px;
   width: 20%;
-  background-color: #007bff00; 
-  color: #62b9a3; 
-  text-align: center; 
-  border: none; 
+  background-color: #007bff00;
+  color: #62b9a3;
+  text-align: center;
+  border: none;
   margin-bottom: 10px;
-  cursor: pointer; 
-  border-radius: 5px; 
+  cursor: pointer;
+  border-radius: 5px;
   margin-left: 93px;
-  
+
 }
 
 
@@ -262,9 +272,30 @@ text {
   text-decoration: none; /* Optional: Remove underline */; /* Adjust margin as needed to align horizontally with the legend items */
   display: flex;
   align-items: center; /* Align content vertically */
- 
+
+}
+
+.legend-source a {
+  margin: 5px;
 }
 
 
+#filters {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 290px;
+  right: 0;
+  width: 120px;
+  background: #fff;
+  margin-right: 20px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 3px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
 
-
+#filters div {
+  text-align: left;
+  font-size: 11px;
+}

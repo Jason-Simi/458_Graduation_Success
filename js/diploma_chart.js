@@ -53,29 +53,29 @@ function drawChart() {
     fetch('assets/incomedata.geojson')
     .then(response => response.json())
     .then(data => {
-       
+
         const meanIncomes = data.features.map(feature => feature.properties.S1902_C03_001E);
 
-   
+
         const below20000 = meanIncomes.filter(income => income < 20000).length;
         const between20000and40000 = meanIncomes.filter(income => income >= 20000 && income < 40000).length;
         const between40000and60000 = meanIncomes.filter(income => income >= 40000 && income < 60000).length;
         const between60000and80000 = meanIncomes.filter(income => income >= 60000 && income < 80000).length;
         const between80000and100000 = meanIncomes.filter(income => income >= 80000 && income < 100000).length;
         const above100000 = meanIncomes.filter(income => income >= 100000).length;
-        
-      
+
+
         const totalCensusTracts = meanIncomes.length;
-        
-        
+
+
         const percentageBelow20000 = (below20000 / totalCensusTracts) * 100;
         const percentageBetween20000and40000 = (between20000and40000 / totalCensusTracts) * 100;
         const percentageBetween40000and60000 = (between40000and60000 / totalCensusTracts) * 100;
         const percentageBetween60000and80000 = (between60000and80000 / totalCensusTracts) * 100;
         const percentageBetween80000and100000 = (between80000and100000 / totalCensusTracts) * 100;
         const percentageAbove100000 = (above100000 / totalCensusTracts) * 100;
-        
-     
+
+
         const chartData = google.visualization.arrayToDataTable([
             ['Income Range', 'Percentage'],
             ['Below $20,000', percentageBelow20000],
@@ -87,7 +87,7 @@ function drawChart() {
         ]);
 
 
-   
+
 
     var options = {
         title: '% of Households by Income Level',
@@ -101,7 +101,7 @@ function drawChart() {
                 color: 'green'
             }
         },
-        width:500,
+        width: 500,
         height: 300,
         chartArea: { left: '30%', width: '70%' },
         colors: ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd','#08519c', '#084594'],
@@ -111,13 +111,13 @@ function drawChart() {
         }
     };
 
- 
+
     const chart = new google.visualization.PieChart(document.getElementById('pov_chart'));
     google.visualization.events.addListener(chart, 'select', selectHandler);
     chart.draw(chartData, options);
 
     function selectHandler() {
-       
+
         const selectedItem = chart.getSelection()[0];
         if (selectedItem) {
             const incomeRange = selectedItem.row;

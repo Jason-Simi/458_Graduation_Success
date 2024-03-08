@@ -132,7 +132,7 @@ async function geojsonFetch() {
                 .addTo(map);
         });
 
-        // create the legend object and anchor it to the html element with id legend.
+// create the legend object and anchor it to the html element with id legend.
 const legend = document.getElementById('legend');
 
 //set up legend grades content and labels
@@ -233,7 +233,6 @@ legend.innerHTML = labels.join('') + source;
         numTracts = pctgradrates[2] + pctgradrates[5] + pctgradrates[10] + pctgradrates[20];
         document.getElementById("census-count").innerHTML = numTracts;
 
-
         x = Object.keys(pctgradrates);
         x.unshift("pctnodiploma")
         y = Object.values(pctgradrates);
@@ -267,9 +266,9 @@ function calDiplomas(currentGradRates, currentMapBounds) {
         }
 
     })
-    console.log(ratesClasses);
     return ratesClasses;
 }
+
 
 function roundToNearest(number, values) {
     let nearest = values.reduce(function(prev, curr) {
@@ -278,36 +277,10 @@ function roundToNearest(number, values) {
     return nearest;
 }
 
-// capture the element reset and add a click event to it.
-const reset = document.getElementById('reset');
-reset.addEventListener('click', event => {
-
-    // this event will trigger the map fly to its origin location and zoom level.
-    map.flyTo({
-        zoom: 6,
-        center: [-123, 47]
-    });
-    // also remove all the applied filters
-    map.setFilter('gradrates-point', null)
-    map.setFilter('pov_data_layer', null)
-
-});
 
 // Inside the geojsonFetch() function
 
 // Define your legend layers and colors
-
-// Get references to tab elements
-function toggleTabs(tabName) {
-    var tabs = document.querySelectorAll('.tab');
-    tabs.forEach(function(tab) {
-        if (tab.id === tabName) {
-            tab.style.display = 'block'; // Show the selected tab
-        } else {
-            tab.style.display = 'none'; // Hide other tabs
-        }
-    });
-}
 
 let popup; // Define popup variable outside event handlers
 
@@ -336,4 +309,51 @@ map.on('mouseleave', 'pov_data_layer', function() {
     if (popup) {
         popup.remove();
     }
+});
+
+// Adds event listener to filter out individual layers
+const proportional = document.getElementById("proportional");
+const chloropleth = document.getElementById("chloropleth");
+
+proportional.addEventListener("change", function(event){
+    if (event.target.checked) {
+        // display map
+        map.setLayoutProperty("gradrates-point", "visibility", "visible");
+    } else {
+        // hide map
+        map.setLayoutProperty("gradrates-point", "visibility", "none");
+    }
+});
+
+chloropleth.addEventListener("change", function(event){
+    if (event.target.checked) {
+        // display map
+        map.setLayoutProperty("pov_data_layer", "visibility", "visible");
+    } else {
+        // hide map
+        map.setLayoutProperty("pov_data_layer", "visibility", "none");
+    }
+});
+
+// capture the element reset and add a click event to it.
+const reset = document.getElementById('reset');
+reset.addEventListener('click', event => {
+
+    // this event will trigger the map fly to its origin location and zoom level.
+    map.flyTo({
+        zoom: 6,
+        center: [-123, 47]
+    });
+    // also remove all the applied filters
+    map.setFilter('gradrates-point', null)
+    map.setFilter('pov_data_layer', null)
+
+    var proportional = document.getElementById("proportional");
+    var chloropleth = document.getElementById("chloropleth");
+    proportional.checked = true;
+    chloropleth.checked = true;
+    // manually trigger event so that map filters reset
+    var event = new Event("change");
+    proportional.dispatchEvent(event);
+    chloropleth.dispatchEvent(event);
 });
