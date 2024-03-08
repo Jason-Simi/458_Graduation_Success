@@ -289,7 +289,7 @@ reset.addEventListener('click', event => {
     });
     // also remove all the applied filters
     map.setFilter('gradrates-point', null)
-
+    map.setFilter('pov_data_layer', null)
 
 });
 

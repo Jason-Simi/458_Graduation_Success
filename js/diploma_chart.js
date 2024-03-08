@@ -57,24 +57,29 @@ function drawChart() {
         const meanIncomes = data.features.map(feature => feature.properties.S1902_C03_001E);
 
    
-        const below40000 = meanIncomes.filter(income => income < 40000).length;
+        const below20000 = meanIncomes.filter(income => income < 20000).length;
+        const between20000and40000 = meanIncomes.filter(income => income >= 20000 && income < 40000).length;
         const between40000and60000 = meanIncomes.filter(income => income >= 40000 && income < 60000).length;
         const between60000and80000 = meanIncomes.filter(income => income >= 60000 && income < 80000).length;
         const between80000and100000 = meanIncomes.filter(income => income >= 80000 && income < 100000).length;
         const above100000 = meanIncomes.filter(income => income >= 100000).length;
-
-    
+        
+      
         const totalCensusTracts = meanIncomes.length;
-        const percentageBelow40000 = (below40000 / totalCensusTracts) * 100;
+        
+        
+        const percentageBelow20000 = (below20000 / totalCensusTracts) * 100;
+        const percentageBetween20000and40000 = (between20000and40000 / totalCensusTracts) * 100;
         const percentageBetween40000and60000 = (between40000and60000 / totalCensusTracts) * 100;
         const percentageBetween60000and80000 = (between60000and80000 / totalCensusTracts) * 100;
         const percentageBetween80000and100000 = (between80000and100000 / totalCensusTracts) * 100;
         const percentageAbove100000 = (above100000 / totalCensusTracts) * 100;
-
-  
+        
+     
         const chartData = google.visualization.arrayToDataTable([
             ['Income Range', 'Percentage'],
-            ['Below $40,000', percentageBelow40000],
+            ['Below $20,000', percentageBelow20000],
+            ['$20,000 - $40,000', percentageBetween20000and40000],
             ['$40,000 - $60,000', percentageBetween40000and60000],
             ['$60,000 - $80,000', percentageBetween60000and80000],
             ['$80,000 - $100,000', percentageBetween80000and100000],
@@ -99,7 +104,7 @@ function drawChart() {
         width:500,
         height: 300,
         chartArea: { left: '30%', width: '70%' },
-        colors: ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#084594'],
+        colors: ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd','#08519c', '#084594'],
         pieSliceText: 'Percentage',
         pieSliceTextStyle: {
             color: 'black'
@@ -108,7 +113,56 @@ function drawChart() {
 
  
     const chart = new google.visualization.PieChart(document.getElementById('pov_chart'));
+    google.visualization.events.addListener(chart, 'select', selectHandler);
     chart.draw(chartData, options);
+
+    function selectHandler() {
+       
+        const selectedItem = chart.getSelection()[0];
+        if (selectedItem) {
+            const incomeRange = selectedItem.row;
+            filterCensusTracts(incomeRange);
+        }
+    }
+    function filterCensusTracts(incomeRange) {
+        let minIncome, maxIncome;
+        switch (incomeRange) {
+            case 0:
+                minIncome = 0;
+                maxIncome = 20000;
+                break;
+            case 1:
+                minIncome = 20000;
+                maxIncome = 40000;
+                break;
+            case 2:
+                minIncome = 40000;
+                maxIncome = 60000;
+                break;
+            case 3:
+                minIncome = 60000;
+                maxIncome = 80000;
+                break;
+            case 4:
+                minIncome = 80000;
+                maxIncome = 100000;
+                break;
+            case 5:
+                minIncome = 100000;
+                maxIncome = Infinity;
+                break;
+            default:
+                break;
+        }
+
+        const filterExpression = [
+            'all',
+            ['>=', 'S1902_C03_001E', minIncome],
+            ['<', 'S1902_C03_001E', maxIncome]
+        ];
+
+        map.setFilter('pov_data_layer', filterExpression);
+    }
 })
 .catch(error => {
     console.error('Error fetching or processing data:', error);
