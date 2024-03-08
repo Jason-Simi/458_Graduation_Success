@@ -1,6 +1,7 @@
 # High School Graduation Rates compared by Mean Household Income
 
-project url here
+<a href="https://jason-simi.github.io/458_Graduation_Success/index.html"> Project Url </a>
+
 
 # Team Members
 Coby Williams Gurian, Jason Todd, Martin Truong, Camille Zhan
