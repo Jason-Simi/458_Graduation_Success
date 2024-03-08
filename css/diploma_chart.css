@@ -1,6 +1,10 @@
 #diploma_chart {
-    width: 50%;
+    width: 10%;
     height: 20%;
     margin: 12.5px;
-    color: white;
+    color: rgb(0, 0, 0);
+}
+
+#donut_chart svg text {
+    fill: black !important;
 }
