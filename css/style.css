@@ -171,84 +171,100 @@ text {
   flex-direction: row-reverse;
 }
 
-/* #diploma-desc {
-  margin-top: 0px;
-} */
+
 
 #legend2 {
   position: fixed;
   bottom: 20px;
-  left: 65%;
+  left: 63%; /* Adjust the left position to move the legend more to the left */
   transform: translateX(-50%);
   background-color: rgb(255, 255, 255);
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 3px;
-  padding: 4px; /* Further reduced padding */
+  padding: 4px;
   z-index: 1000;
   display: flex;
   justify-content: center;
   width: auto;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  margin: 0 6px; /* Further reduced margin */
+  margin: 0 6px;
 }
 
 .legend-key {
-  width: 12px; /* Further reduced width */
-  height: 12px; /* Further reduced height */
-  margin-right: 2px; /* Further reduced margin */
+  width: 12px;
+  height: 12px;
+  margin-right: 2px;
 }
 
 .legend-key span {
-  font-size: 8px; /* Further reduced font size */
+  font-size: 8px;
 }
 
 .legend-item span {
-  margin-left: 2px; /* Further reduced margin */
+  margin-left: 2px;
 }
 
 .legend-title {
   margin-left: 10px; /* Adjust the margin between title and legend items */
+  font-family: 'Open Sans', sans-serif;
+  color: #000000;
+  font-size: medium;
+  font-weight: bold;
 }
 
-/* Style for the sidebar */
+
+
 #sidebar {
-  width: 200px; /* Adjust the width as needed */
-  height: 100%; /* Make sidebar full height */
-  position: fixed; /* Fixed position */
-  top: 0; /* Align to the top */
-  left: 0; /* Align to the left */
-  background-color: #f0f0f0; /* Sidebar background color */
-  padding: 20px; /* Add some padding */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
-  display: flex; /* Use flexbox for button layout */
-  flex-direction: column; /* Buttons stacked vertically */
-  justify-content: flex-start; /* Align buttons to the top */
+  width: 200px; 
+  height: 100%;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  background-color: #f0f0f0; 
+  padding: 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-start; 
 }
 
-/* Style for the buttons */
-/* Style for the buttons */
+
 .sidebar-button {
   margin-top: 40px;
   width: 20%;
-  background-color: #007bff00; /* Button background color */
-  color: #62b9a3; /* Button text color */ /* Adjust vertical padding */
-  text-align: center; /* Center text */
-  border: none; /* Remove border */
-  margin-bottom: 10px; /* Add some space between buttons */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  border-radius: 5px; /* Add border radius */
+  background-color: #007bff00; 
+  color: #62b9a3; 
+  text-align: center; 
+  border: none; 
+  margin-bottom: 10px;
+  cursor: pointer; 
+  border-radius: 5px; 
   margin-left: 93px;
   
 }
 
 
 .sidebar-button:hover {
-  background-color: #000000; /* Darker color on hover */
+  background-color: #000000;
 }
 
-/* Style for the buttons at the top */
+.legend2 .legend-source a {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  color: #000000;
+  font-size: medium;
+  font-weight: bold;
+  text-decoration: none; /* Optional: Remove underline */; /* Adjust margin as needed to align horizontally with the legend items */
+  display: flex;
+  align-items: center; /* Align content vertically */
+ 
+}
+
+
+
 
