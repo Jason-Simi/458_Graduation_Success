@@ -100,7 +100,7 @@ body {
   bottom: 0;
   right: 0;
   width: 110px;
-  background: #fff;
+  background: lightslategrey;
   margin-right: 20px;
   margin-bottom: 20px;
   padding: 10px 20px 10px 10px;
@@ -188,7 +188,7 @@ text {
   bottom: 20px;
   left: 63%; /* Adjust the left position to move the legend more to the left */
   transform: translateX(-50%);
-  background-color: rgb(255, 255, 255);
+  background-color: lightslategrey;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   padding: 4px;
@@ -287,7 +287,7 @@ text {
   bottom: 320px;
   right: 0;
   width: 120px;
-  background: #fff;
+  background: lightslategrey;
   margin-right: 20px;
   padding: 10px 10px 10px 10px;
   border-radius: 3px;
