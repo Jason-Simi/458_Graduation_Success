@@ -284,7 +284,7 @@ text {
   position: absolute;
   display: flex;
   flex-direction: column;
-  bottom: 320px;
+  bottom: 18em;
   right: 0;
   width: 120px;
   background: lightslategrey;
